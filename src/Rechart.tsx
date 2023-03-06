@@ -1,26 +1,42 @@
 import React from "react";
-import { render } from "react-dom";
 import {
   BarChart,
   CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   Bar,
+  PieChart,
 } from "recharts";
 
+/**
+ * type CategoryType = {
+ *   id: number;
+ *   name: string;
+ * };
+ *
+ * type HouseholdType = {
+ *   id: number;
+ *   amount: number;
+ *   memo: string;
+ *   registered_at: Date;
+ *   category: CategoryType;
+ * };
+ */
 function Rechart({ categories, households }: PropType) {
-  return (
-    <div className="flex flex-col items-center gap-4">
-      <h2 className="text-2xl">Recharts</h2>
+  React.useEffect(() => {
+    document.title = "ReChart";
+  }, []);
 
-      <div>
-        {/* registered_at is string by formatted YYYY-MM-DD */}
+  return (
+    <div className="flex flex-col items-center gap-4 pt-2">
+      <div className="flex flex-col gap-4 p-2 items-center border-2 border-slate-500 rounded-md">
+        <h2 className="text-2xl">BarChart</h2>
+
         <BarChart
           width={600}
           height={300}
-          margin={{ left: 30 }}
+          margin={{ left: 10, right: 10 }}
           data={households
             .slice(0, 10)
             .sort(
@@ -42,10 +58,17 @@ function Rechart({ categories, households }: PropType) {
             fontSize={13}
             tick={{ fill: "black" }}
           />
-          <YAxis dataKey="amount" tick={{ fill: "black" }} />
+          <YAxis dataKey="amount" tick={{ fill: "black", fontSize: 15 }} />
           <Tooltip />
           <Bar dataKey="amount" fill="#8884d8" />
         </BarChart>
+      </div>
+
+      <div className="flex flex-col gap-4 p-2 items-center border-2 border-slate-500 rounded-md">
+        <h2 className="text-2xl">Pie Chart</h2>
+
+        {/* TODO: show all households by category  */}
+        <PieChart width={600} height={300}></PieChart>
       </div>
     </div>
   );

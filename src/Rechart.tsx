@@ -8,13 +8,17 @@ import {
   Bar,
   PieChart,
   Pie,
+  Cell,
+  Legend,
+  Label,
 } from "recharts";
 
-function Rechart({ categories, households }: PropType) {
-  React.useEffect(() => {
-    document.title = "ReChart";
-  }, []);
+type AggregateType = {
+  category: string;
+  amount: number;
+};
 
+function Rechart({ categories, households }: PropType) {
   /**
    * [
    *  {"category": string, "amount": NNNN},
@@ -23,11 +27,7 @@ function Rechart({ categories, households }: PropType) {
    *  ...
    * ]
    */
-
-  type AggregateType = {
-    category: string;
-    amount: number;
-  };
+  const [data, setData] = React.useState<AggregateType[]>([]);
 
   function householdByCategory() {
     const household_by_category: AggregateType[] = categories.map(
@@ -51,8 +51,30 @@ function Rechart({ categories, households }: PropType) {
     return household_by_category;
   }
 
+  React.useEffect(() => {
+    document.title = "ReChart";
+    setData(householdByCategory());
+  }, []);
+
+  function get_random_colors() {
+    return [
+      "#C0392B",
+      "#E74C3C",
+      "#9B59B6",
+      "#2980B9",
+      "#1ABC9C",
+      "#16A085",
+      "#2ECC71",
+      "#F1C40F",
+      "#F39C12",
+      "#E67E22",
+      "#D35400",
+    ];
+  }
+
   return (
     <div className="flex flex-col items-center gap-4 pt-2">
+      <h1 className="text-3xl text-black">Recharts</h1>
       <div className="flex flex-col gap-4 p-2 items-center border-2 border-slate-500 rounded-md">
         <h2 className="text-2xl">BarChart</h2>
 
@@ -92,15 +114,48 @@ function Rechart({ categories, households }: PropType) {
 
         <PieChart width={600} height={300}>
           <Pie
-            data={householdByCategory()}
+            data={data}
             dataKey="amount"
             nameKey="category"
             cx="50%"
             cy="50%"
-            outerRadius={50}
+            outerRadius={100}
             fill="#8884d8"
-          />
-          {/* TODO: Different Color */}
+            fontSize={20}
+            label={({
+              cx,
+              cy,
+              midAngle,
+              innerRadius,
+              outerRadius,
+              value,
+              index,
+            }) => {
+              const RADIAN = Math.PI / 180;
+              const radius = 25 + innerRadius + (outerRadius - innerRadius);
+              const x = cx + radius * Math.cos(-midAngle * RADIAN);
+              const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+              return (
+                <text
+                  x={x}
+                  y={y}
+                  fill="#8884d8"
+                  textAnchor={x > cx ? "start" : "end"}
+                  dominantBaseline="central"
+                >
+                  {data[index].category} ({value})
+                </text>
+              );
+            }}
+          >
+            {/* set PieCell color */}
+            {get_random_colors().map((color, index) => (
+              <Cell key={index} fill={color}>
+                <Label value="hoge" />
+              </Cell>
+            ))}
+          </Pie>
         </PieChart>
       </div>
     </div>

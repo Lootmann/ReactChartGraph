@@ -81,7 +81,7 @@ function BarChart({ categories, households }: PropType) {
   }
 
   /*************************
-   * Bar Data
+   * util
    *************************/
   function get_random_color() {
     const rand_number = () => {
@@ -90,10 +90,22 @@ function BarChart({ categories, households }: PropType) {
     return `rgba(${rand_number()}, ${rand_number()}, ${rand_number()}, 0.7)`;
   }
 
+  // Bar date
   function get_bardata() {
-    const labels = categories.map((category) => {
-      return category.name;
-    });
+    // const labels = categories.map((category) => {
+    //   return category.name;
+    // });
+    //
+    const labels = households
+      .slice(100, 110)
+      .sort(
+        (a, b) =>
+          new Date(a.registered_at).getTime() -
+          new Date(b.registered_at).getTime()
+      )
+      .map((household) => {
+        return String(household.registered_at);
+      });
 
     const data = {
       labels,
@@ -112,7 +124,7 @@ function BarChart({ categories, households }: PropType) {
     <div className="">
       <Bar
         height={400}
-        width={200}
+        width={800}
         options={bar_options}
         data={get_bardata()}
       />

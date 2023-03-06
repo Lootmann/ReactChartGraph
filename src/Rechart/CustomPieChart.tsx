@@ -55,51 +55,53 @@ function CustomPieChart({ categories, households }: PropType) {
       <div className="flex flex-col gap-4 p-2 items-center border-2 border-slate-500 rounded-md">
         <h2 className="text-2xl">Pie Chart</h2>
 
-        <PieChart width={600} height={300}>
-          <Pie
-            data={data}
-            dataKey="amount"
-            nameKey="category"
-            cx="50%"
-            cy="50%"
-            outerRadius={100}
-            fill="#8884d8"
-            fontSize={20}
-            label={({
-              cx,
-              cy,
-              midAngle,
-              innerRadius,
-              outerRadius,
-              value,
-              index,
-            }) => {
-              const RADIAN = Math.PI / 180;
-              const radius = 25 + innerRadius + (outerRadius - innerRadius);
-              const x = cx + radius * Math.cos(-midAngle * RADIAN);
-              const y = cy + radius * Math.sin(-midAngle * RADIAN);
+        {households.length !== 0 && (
+          <PieChart width={600} height={300}>
+            <Pie
+              data={data}
+              dataKey="amount"
+              nameKey="category"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              fill="#8884d8"
+              fontSize={20}
+              label={({
+                cx,
+                cy,
+                midAngle,
+                innerRadius,
+                outerRadius,
+                value,
+                index,
+              }) => {
+                const RADIAN = Math.PI / 180;
+                const radius = 25 + innerRadius + (outerRadius - innerRadius);
+                const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-              return (
-                <text
-                  x={x}
-                  y={y}
-                  fill="#8884d8"
-                  textAnchor={x > cx ? "start" : "end"}
-                  dominantBaseline="central"
-                >
-                  {data[index].category} ({value})
-                </text>
-              );
-            }}
-          >
-            {/* set PieCell color */}
-            {get_random_colors().map((color, index) => (
-              <Cell key={index} fill={color}>
-                <Label value="hoge" />
-              </Cell>
-            ))}
-          </Pie>
-        </PieChart>
+                return (
+                  <text
+                    x={x}
+                    y={y}
+                    fill="#8884d8"
+                    textAnchor={x > cx ? "start" : "end"}
+                    dominantBaseline="central"
+                  >
+                    {data[index].category} ({value})
+                  </text>
+                );
+              }}
+            >
+              {/* set PieCell color */}
+              {get_random_colors().map((color, index) => (
+                <Cell key={index} fill={color}>
+                  <Label value="hoge" />
+                </Cell>
+              ))}
+            </Pie>
+          </PieChart>
+        )}
       </div>
     </div>
   );

@@ -7,26 +7,49 @@ import {
   Tooltip,
   Bar,
   PieChart,
+  Pie,
 } from "recharts";
 
-/**
- * type CategoryType = {
- *   id: number;
- *   name: string;
- * };
- *
- * type HouseholdType = {
- *   id: number;
- *   amount: number;
- *   memo: string;
- *   registered_at: Date;
- *   category: CategoryType;
- * };
- */
 function Rechart({ categories, households }: PropType) {
   React.useEffect(() => {
     document.title = "ReChart";
   }, []);
+
+  /**
+   * [
+   *  {"category": string, "amount": NNNN},
+   *  {"category": string, "amount": NNNN},
+   *  {"category": string, "amount": NNNN},
+   *  ...
+   * ]
+   */
+
+  type AggregateType = {
+    category: string;
+    amount: number;
+  };
+
+  function householdByCategory() {
+    const household_by_category: AggregateType[] = categories.map(
+      (category) => ({ category: category.name, amount: 0 })
+    );
+
+    for (let i = 0; i < 100; i++) {
+      const random_household =
+        households[Math.floor(Math.random() * households.length)];
+
+      // NOTE: Need Refactor - O(100 * categories.length)
+      if (random_household !== undefined) {
+        household_by_category.forEach((h) => {
+          if (h.category == random_household.category.name) {
+            h.amount += random_household.amount;
+          }
+        });
+      }
+    }
+
+    return household_by_category;
+  }
 
   return (
     <div className="flex flex-col items-center gap-4 pt-2">
@@ -67,8 +90,18 @@ function Rechart({ categories, households }: PropType) {
       <div className="flex flex-col gap-4 p-2 items-center border-2 border-slate-500 rounded-md">
         <h2 className="text-2xl">Pie Chart</h2>
 
-        {/* TODO: show all households by category  */}
-        <PieChart width={600} height={300}></PieChart>
+        <PieChart width={600} height={300}>
+          <Pie
+            data={householdByCategory()}
+            dataKey="amount"
+            nameKey="category"
+            cx="50%"
+            cy="50%"
+            outerRadius={50}
+            fill="#8884d8"
+          />
+          {/* TODO: Different Color */}
+        </PieChart>
       </div>
     </div>
   );

@@ -15,3 +15,8 @@ type PropType = {
   categories: CategoryType[];
   households: HouseholdType[];
 };
+
+type AggregateType = {
+  category: string;
+  amount: number;
+};

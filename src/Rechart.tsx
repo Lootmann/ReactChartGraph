@@ -13,11 +13,6 @@ import {
   Label,
 } from "recharts";
 
-type AggregateType = {
-  category: string;
-  amount: number;
-};
-
 function Rechart({ categories, households }: PropType) {
   /**
    * [

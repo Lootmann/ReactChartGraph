@@ -1,54 +1,53 @@
 import React from "react";
+import { render } from "react-dom";
+import {
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar,
+} from "recharts";
 
 function Rechart({ categories, households }: PropType) {
   return (
-    <>
+    <div className="flex flex-col items-center gap-4">
       <h2 className="text-2xl">Recharts</h2>
 
-      <div className="text-xl flex flex-col gap-2">
-        <table className="table-auto">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>NAME</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {categories.map((category) => (
-              <tr>
-                <td>{category.id}</td>
-                <td>{category.name}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <table className="table-auto">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Amout</th>
-              <th>Category</th>
-              <th>Memo</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {households.slice(0, 10).map((household) => (
-              <tr>
-                <td>{household.id}</td>
-                <td>{household.amount}</td>
-                <td>
-                  {household.category.id}: {household.category.name}
-                </td>
-                <td>{household.memo}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div>
+        {/* registered_at is string by formatted YYYY-MM-DD */}
+        <BarChart
+          width={600}
+          height={300}
+          margin={{ left: 30 }}
+          data={households
+            .slice(0, 10)
+            .sort(
+              (a, b) =>
+                new Date(a.registered_at).getTime() -
+                new Date(b.registered_at).getTime()
+            )}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="registered_at"
+            height={60}
+            padding={{ left: 0, right: 20 }}
+            angle={45}
+            dx={20}
+            dy={20}
+            minTickGap={-200}
+            axisLine={false}
+            fontSize={13}
+            tick={{ fill: "black" }}
+          />
+          <YAxis dataKey="amount" tick={{ fill: "black" }} />
+          <Tooltip />
+          <Bar dataKey="amount" fill="#8884d8" />
+        </BarChart>
       </div>
-    </>
+    </div>
   );
 }
 

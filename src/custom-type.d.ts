@@ -7,6 +7,7 @@ type HouseholdType = {
   id: number;
   amount: number;
   memo: string;
+  registered_at: Date;
   category: CategoryType;
 };
 

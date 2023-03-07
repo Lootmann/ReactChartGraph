@@ -8,6 +8,7 @@ import CustomPieChart from "./Rechart/CustomPieChart";
 
 // React Chart.JS
 import BarChart from "./ReactChartJS/BarChart";
+import PieChart from "./ReactChartJS/PieChart";
 
 const BASE_URL = "http://localhost:3000";
 
@@ -39,12 +40,17 @@ function App() {
                 households={households.slice()}
               />
             )}
-            {/* <BarChart categories={categories} households={households} /> */}
+            {households.length !== 0 && (
+              <PieChart
+                categories={categories.slice()}
+                households={households.slice()}
+              />
+            )}
           </div>
         </div>
 
         <div className="flex flex-col items-center flex-1 border-2 border-slate-300 rounded-md p-2">
-          <div className="flex flex-col items-center gap-4 pt-2">
+          <div className="flex flex-col items-center flex-1 gap-4 pt-2">
             <h1 className="text-3xl text-black">Recharts</h1>
             {households.length !== 0 && (
               <CustomBarChart

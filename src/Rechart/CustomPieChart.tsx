@@ -1,53 +1,18 @@
-/**
- * some times dont load this component ... D:
- */
 import React from "react";
-import { PieChart, Pie, Cell, Label, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, Label } from "recharts";
+import { random_rgba, get_househols_by_categories } from "../utils";
 
 function CustomPieChart({ categories, households }: PropType) {
   const [data, setData] = React.useState<AggregateType[]>([]);
 
-  function householdByCategory() {
-    const household_by_category: AggregateType[] = categories.map(
-      (category) => ({ category: category.name, amount: 0 })
-    );
-
-    for (let i = 0; i < 100; i++) {
-      const random_household =
-        households[Math.floor(Math.random() * households.length)];
-
-      // NOTE: Need Refactor - O(100 * categories.length)
-      if (random_household !== undefined) {
-        household_by_category.forEach((h) => {
-          if (h.category == random_household.category.name) {
-            h.amount += random_household.amount;
-          }
-        });
-      }
-    }
-
-    return household_by_category;
-  }
-
   React.useEffect(() => {
-    document.title = "ReChart";
-    setData(householdByCategory());
+    setData(get_househols_by_categories(households, categories, 100));
   }, []);
 
   function get_random_colors() {
-    return [
-      "#C0392B",
-      "#E74C3C",
-      "#9B59B6",
-      "#2980B9",
-      "#1ABC9C",
-      "#16A085",
-      "#2ECC71",
-      "#F1C40F",
-      "#F39C12",
-      "#E67E22",
-      "#D35400",
-    ];
+    const colors = [];
+    for (let i = 0; i < 10; ++i) colors.push(random_rgba());
+    return colors;
   }
 
   return (

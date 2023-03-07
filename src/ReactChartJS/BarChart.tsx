@@ -1,4 +1,5 @@
 import React from "react";
+import { random_rgba, get_random_households } from "../utils";
 
 import { Bar } from "react-chartjs-2";
 import {
@@ -62,33 +63,9 @@ const bar_options = {
   },
 };
 
-function random_rgba() {
-  const rand_number = () => {
-    return Math.floor(Math.random() * 255);
-  };
-  return `rgba(${rand_number()}, ${rand_number()}, ${rand_number()}, 0.8)`;
-}
-
-function get_random_households(households: HouseholdType[]) {
-  const random_idx = () => {
-    return Math.floor(Math.random() * households.length);
-  };
-  const res: HouseholdType[] = [];
-
-  for (let i = 0; i < 15; ++i) {
-    res.push(households[random_idx()]);
-  }
-
-  return res.sort((a, b) => {
-    return (
-      new Date(a.registered_at).getTime() - new Date(b.registered_at).getTime()
-    );
-  });
-}
-
 function BarChart({ categories, households }: PropType) {
   function create_bardata() {
-    const random_households = get_random_households(households);
+    const random_households = get_random_households(households, 15);
 
     const labels = random_households.map((household) => {
       return household.registered_at.toString();

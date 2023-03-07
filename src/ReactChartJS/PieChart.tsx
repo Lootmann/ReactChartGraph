@@ -2,44 +2,65 @@ import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 
+import { random_rgba, get_househols_by_categories } from "../utils";
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const options = {
   responsive: true,
   maintainAspectRatio: false,
-};
 
-const data = {
-  labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-  datasets: [
-    {
-      label: "# of Votes",
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        "rgba(255, 99, 132, 0.2)",
-        "rgba(54, 162, 235, 0.2)",
-        "rgba(255, 206, 86, 0.2)",
-        "rgba(75, 192, 192, 0.2)",
-        "rgba(153, 102, 255, 0.2)",
-        "rgba(255, 159, 64, 0.2)",
-      ],
-      borderColor: [
-        "rgba(255, 99, 132, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 206, 86, 1)",
-        "rgba(75, 192, 192, 1)",
-        "rgba(153, 102, 255, 1)",
-        "rgba(255, 159, 64, 1)",
-      ],
-      borderWidth: 1,
+  plugins: {
+    legend: {
+      position: "top" as const,
+      labels: {
+        font: { size: 12 },
+        color: "white",
+      },
     },
-  ],
+    title: {
+      display: true,
+      text: "Chart.js Pie Chart",
+      font: { size: 22 },
+      color: "Black",
+    },
+  },
 };
 
 function PieChart({ categories, households }: PropType) {
+  function create_data() {
+    const households_by_categories = get_househols_by_categories(
+      households,
+      categories,
+      100
+    );
+
+    const colors = Array.from(Array(10), () => {
+      return random_rgba();
+    });
+
+    const pie_data = {
+      labels: households_by_categories.map((h) => {
+        return h.category;
+      }),
+      datasets: [
+        {
+          data: households_by_categories.map((h) => {
+            return h.amount;
+          }),
+          backgroundColor: colors,
+          borderColor: colors,
+          borderWidth: 0,
+        },
+      ],
+    };
+
+    return pie_data;
+  }
+
   return (
     <div className="p-2 items-center border-2 border-slate-500 rounded-md">
-      <Pie options={options} data={data} height={320} width={640} />
+      <Pie options={options} data={create_data()} height={320} width={640} />
     </div>
   );
 }

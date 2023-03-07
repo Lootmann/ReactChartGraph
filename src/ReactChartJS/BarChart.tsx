@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 
 import { Bar } from "react-chartjs-2";
 import {
@@ -46,10 +45,19 @@ const bar_options = {
   // Graph Left, Bottom Axes label
   scales: {
     x: {
-      ticks: { color: "#ffffff" },
+      ticks: {
+        color: "black",
+        font: { size: 13 },
+      },
+      grid: { color: "white" },
     },
+
     y: {
-      ticks: { color: "#ae9215" },
+      ticks: {
+        color: "black",
+        font: { size: 16 },
+      },
+      grid: { color: "white" },
     },
   },
 };
@@ -58,7 +66,7 @@ function random_rgba() {
   const rand_number = () => {
     return Math.floor(Math.random() * 255);
   };
-  return `rgba(${rand_number()}, ${rand_number()}, ${rand_number()}, 0.7)`;
+  return `rgba(${rand_number()}, ${rand_number()}, ${rand_number()}, 0.8)`;
 }
 
 function get_random_households(households: HouseholdType[]) {
@@ -67,9 +75,10 @@ function get_random_households(households: HouseholdType[]) {
   };
   const res: HouseholdType[] = [];
 
-  for (let i = 0; i < 20; ++i) {
+  for (let i = 0; i < 15; ++i) {
     res.push(households[random_idx()]);
   }
+
   return res.sort((a, b) => {
     return (
       new Date(a.registered_at).getTime() - new Date(b.registered_at).getTime()
@@ -90,7 +99,7 @@ function BarChart({ categories, households }: PropType) {
       datasets: [
         {
           label: "Amount",
-          data: labels.map(() => Math.floor(Math.random() * 500) + 100),
+          data: labels.map((_, idx) => random_households[idx].amount),
           backgroundColor: random_rgba(),
         },
       ],
@@ -100,14 +109,12 @@ function BarChart({ categories, households }: PropType) {
 
   return (
     <div className="flex flex-col gap-4 p-2 items-center border-2 border-slate-500 rounded-md">
-      {households.length !== 0 && (
-        <Bar
-          height={350}
-          width={750}
-          options={bar_options}
-          data={create_bardata()}
-        />
-      )}
+      <Bar
+        height={350}
+        width={640}
+        options={bar_options}
+        data={create_bardata()}
+      />
     </div>
   );
 }

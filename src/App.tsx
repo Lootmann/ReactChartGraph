@@ -33,7 +33,12 @@ function App() {
         <div className="flex flex-col items-center flex-1 border-2 border-slate-300 rounded-md p-2">
           <div className="flex flex-col items-center gap-4 pt-2">
             <h1 className="text-3xl text-black">ReactChartJS</h1>
-            <BarChart categories={categories} households={households} />
+            {households.length !== 0 && (
+              <BarChart
+                categories={categories.slice()}
+                households={households.slice()}
+              />
+            )}
             {/* <BarChart categories={categories} households={households} /> */}
           </div>
         </div>
@@ -41,8 +46,18 @@ function App() {
         <div className="flex flex-col items-center flex-1 border-2 border-slate-300 rounded-md p-2">
           <div className="flex flex-col items-center gap-4 pt-2">
             <h1 className="text-3xl text-black">Recharts</h1>
-            <CustomBarChart categories={categories} households={households} />
-            <CustomPieChart categories={categories} households={households} />
+            {households.length !== 0 && (
+              <CustomBarChart
+                categories={categories.slice()}
+                households={households.slice()}
+              />
+            )}
+            {households.length !== 0 && (
+              <CustomPieChart
+                categories={categories.slice()}
+                households={households.slice()}
+              />
+            )}
           </div>
         </div>
       </div>

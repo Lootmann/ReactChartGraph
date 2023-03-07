@@ -2,7 +2,7 @@
  * some times dont load this component ... D:
  */
 import React from "react";
-import { PieChart, Pie, Cell, Label } from "recharts";
+import { PieChart, Pie, Cell, Label, ResponsiveContainer } from "recharts";
 
 function CustomPieChart({ categories, households }: PropType) {
   const [data, setData] = React.useState<AggregateType[]>([]);
@@ -52,7 +52,7 @@ function CustomPieChart({ categories, households }: PropType) {
 
   return (
     <div>
-      <div className="flex flex-col gap-4 p-2 items-center border-2 border-slate-500 rounded-md">
+      <div className="h-full flex flex-col gap-4 p-2 items-center border-2 border-slate-500 rounded-md">
         <h2 className="text-2xl">Pie Chart</h2>
 
         <PieChart width={600} height={300}>
